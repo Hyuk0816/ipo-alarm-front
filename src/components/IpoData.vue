@@ -23,7 +23,7 @@
       <tr v-for="(item, index) in paginatedData" :key="index">
         <td>{{index + 1 }}</td>
         <td>{{ item.ipoName }}</td>
-        <td>{{ item.ipoPrice || '정보 없음' }}</td>
+        <td>{{ item.ipoPrice}}</td>
         <td>{{ item.confirmPrice }}</td>
         <td>{{ item.competitionRate }}</td>
         <td>{{ item.securities }}</td>
@@ -35,7 +35,7 @@
     </table>
     <div class="pagination">
       <button @click="prevPage" :disabled="currentPage === 0">이전</button>
-      <span>페이지 {{ currentPage + 1 }} / {{ totalPages }}</span>
+      <span>{{ currentPage + 1 }} / {{ totalPages }}</span>
       <button @click="nextPage" :disabled="currentPage >= totalPages - 1">다음</button>
     </div>
   </div>
@@ -75,6 +75,8 @@ const fetchData = async (page) => {
   }
 };
 
+
+
 const searchData = () => {
   currentPage.value = 0; // 검색 시 페이지를 처음으로 설정
   fetchData(currentPage.value);
@@ -106,6 +108,9 @@ const formatDate = (dateString) => {
 };
 
 onMounted(() => fetchData());
+
+
+
 </script>
 
 <style scoped>
