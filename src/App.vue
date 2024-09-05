@@ -2,9 +2,11 @@
 import IpoData from './components/IpoData.vue';
 import KakaoLogin from "./components/KakaoLogin.vue";
 import MonthlyChart from './components/MonthlyChart.vue';
+import Navbar from "./components/Navbar.vue";
 export default {
   name: 'App',
   components: {
+    Navbar,
     KakaoLogin,
     IpoData,
     MonthlyChart,
@@ -12,9 +14,7 @@ export default {
 };
 </script>
 <template>
-  <div id="kakao">
-    <KakaoLogin />
-  </div>
+  <Navbar/>
   <div id="montlyChart">
     <MonthlyChart />
   </div>

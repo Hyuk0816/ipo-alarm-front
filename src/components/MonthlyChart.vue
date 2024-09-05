@@ -1,16 +1,20 @@
 <template>
-  <div>
-    <div>
-      <button v-for="year in years" :key="year" @click="fetchData(year)">
-        {{ year }}
-      </button>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center mb-3">
+        <button v-for="year in years" :key="year" @click="fetchData(year)" class="btn btn-primary">
+          {{ year }}
+        </button>
+      </div>
+      <div class="col-12 col-md-8 offset-md-2">
+        <canvas id="profitChart"></canvas>
+      </div>
     </div>
-    <canvas id="profitChart"></canvas>
   </div>
 </template>
 
 <script>
-import {Chart, registerables} from 'chart.js';
+import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
 
@@ -74,6 +78,7 @@ export default {
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false, // 비율 유지하지 않기
           scales: {
             y: {
               beginAtZero: true
@@ -92,5 +97,9 @@ export default {
 <style scoped>
 button {
   margin: 5px;
+}
+
+#profitChart {
+  height: 400px; /* 원하는 높이 설정 */
 }
 </style>
