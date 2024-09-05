@@ -96,10 +96,13 @@ export default {
 
 <style scoped>
 button {
-  margin: 5px;
+  margin-top: 30px;
+  margin-right: 10px;
 }
 
 #profitChart {
   height: 400px; /* 원하는 높이 설정 */
+  width: 200px;
+  justify-content: left;
 }
 </style>
