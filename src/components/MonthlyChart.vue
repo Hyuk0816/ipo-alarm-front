@@ -1,13 +1,24 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-12 text-center mb-3">
-        <button v-for="year in years" :key="year" @click="fetchData(year)" class="btn btn-primary">
-          {{ year }}
-        </button>
-      </div>
-      <div class="col-12 col-md-8 offset-md-2">
+      <div class="col-md-12">
         <canvas id="profitChart"></canvas>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-pills justify-content-center">
+          <li class="nav-item" v-for="year in years" :key="year">
+            <a
+                class="nav-link"
+                :class="{ active: selectedYear === year }"
+                @click="fetchData(year)"
+                href="#"
+            >
+              {{ year }}
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -25,6 +36,7 @@ export default {
       chart: null,
       chartData: [],
       currentRequest: null,
+      selectedYear: 2024, // 기본 선택 연도
     };
   },
   methods: {
@@ -40,6 +52,7 @@ export default {
       try {
         const response = await fetch(`http://localhost:8080/api/listing_shares/monthly_profit?year=${year}`, { signal });
         this.chartData = await response.json();
+        this.selectedYear = year; // 선택된 연도 업데이트
         this.updateChart();
       } catch (error) {
         if (error.name === 'AbortError') {
@@ -69,7 +82,7 @@ export default {
             '11월', '12월'
           ],
           datasets: [{
-            label: '월별 수익',
+            label: '월별 이익',
             data: this.chartData,
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 2,
@@ -83,26 +96,33 @@ export default {
             y: {
               beginAtZero: true
             }
+          },
+          plugins: {
+            title:{
+              display: true,
+              text: "월간 공모가 대비 상장일 수익률",
+              font: {
+                size : 20
+              }
+            }
           }
         }
       });
     }
   },
   mounted() {
-    this.fetchData(2024); // 초기 데이터 로드
+    this.fetchData(this.selectedYear); // 초기 데이터 로드
   }
 };
 </script>
 
 <style scoped>
-button {
-  margin-top: 30px;
-  margin-right: 10px;
+.nav-pills .nav-link {
+  margin-bottom: 10px; /* 탭 간의 간격 조정 */
 }
 
 #profitChart {
   height: 400px; /* 원하는 높이 설정 */
-  width: 200px;
-  justify-content: left;
+  width: 50px; /* 너비를 100%로 설정 */
 }
 </style>

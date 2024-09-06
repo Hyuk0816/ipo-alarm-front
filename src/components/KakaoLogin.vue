@@ -8,7 +8,7 @@
 const goToKakaoLogin = () => {
   // 카카오 로그인 URL
   // 카카오 로그인 페이지로 이동
-  const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={id}}&client_secret={secret}}&redirect_uri=http://localhost:8080/dev/login/oauth/kakao`;
+  const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=4273ed90c97fada8f1dedfc1222c3466&client_secret=lX1BBKnPhoN1hoalZ7XLdfml8UF74rpd&redirect_uri=http://localhost:8080/dev/login/oauth/kakao`;
   window.location.href = kakaoLoginUrl; // 해당 URL로 이동
 };
 </script>
