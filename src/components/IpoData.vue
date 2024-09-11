@@ -62,8 +62,8 @@
         <td>{{ item.securities }}</td>
         <td>{{ formatDate(item.startDate) }}</td>
         <td>{{ formatDate(item.endDate) }}</td>
-        <td>
-          <button class="btn btn-primary" @click="openModal(item)">신청</button>
+        <td class="text-center">
+          <button class="btn btn-primary" @click="openModal(item)" id="alarm_button">신청</button>
         </td>
       </tr>
       </tbody>
@@ -105,7 +105,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import axios from 'axios';
+import axios from '../plugin/axios.js';
 import Modal from './Modal.vue'; // 모달 컴포넌트 임포트
 
 
@@ -200,12 +200,14 @@ const adjustedCurrentPage = computed(() => {
   return currentPage.value - 1; // 프론트엔드에서 1부터 시작하므로 1 빼줌
 });
 
-
 const submitAlarm = async () => {
   if (selectedItem.value) {
     console.log(selectedItem.value);
     try {
-      await axios.post(`http://localhost:8080/api/alarm/data/${selectedItem.value}`); // 아이템 ID 사용
+      const ipoName = selectedItem.value; // ipoName으로 사용
+      await axios.post(`http://localhost:8080/api/alarm/data`, null, {
+        params: { ipoName } // params를 객체 형태로 전달
+      });
 
       alert('알람 신청 완료!');
     } catch (error) {
@@ -327,6 +329,5 @@ th {
 .pagination a.last-page {
   font-weight: bold;
   position: relative;
-
 }
 </style>

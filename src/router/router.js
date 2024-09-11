@@ -8,8 +8,7 @@ import ListingShares from "../components/ListingShares.vue";
 const router = createRouter({
     history: createWebHistory(),
     routes:[
-        {path:'/',component:MonthlyChart},
-        {path:'/login',component:KakaoLogin},
+        {path:'/',component:MonthlyChart, name:"home"},
         {path: '/IpoData', component:IpoData},
         {path: '/ListingShares', component:ListingShares},
     ]

@@ -57,7 +57,7 @@
         <td>{{ item.openingPrice }}</td>
         <td>{{ item.changeRateOpeningToOfferingPrice }}</td>
         <td>{{ item.closingPriceFirstDay }}</td>
-        <td>
+        <td class="text-center">
           <button class="btn btn-primary" @click="openModal(item)">신청</button>
         </td>
       </tr>
@@ -100,7 +100,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import axios from 'axios';
+import axios from '../plugin/axios.js'
 import Modal from './Modal.vue'; // 모달 컴포넌트 임포트
 
 const listingData = ref([]);
@@ -199,17 +199,26 @@ const openModal = (item) => {
 const submitAlarm = async () => {
   if (selectedItem.value) {
     console.log(selectedItem.value);
-    try {
-      await axios.post(`http://localhost:8080/api/listing_share_alarm/alarm/${selectedItem.value}`); // 아이템 ID 사용
+    const listingShares = selectedItem.value;
 
-      alert('알람 신청 완료!');
+    try {
+      const response = await axios.post(`http://localhost:8080/api/listing_share_alarm/alarm`, null, {
+        params: { listingShares }
+      });
+
+      alert(response.data.statusMsg);
     } catch (error) {
+      if (error.response) {
+        alert(error.response.data.errorMessage);
+      } else {
+        alert('알람 신청 중 오류 발생');
+      }
       console.error('Error submitting alarm:', error);
-      alert('알람 신청 중 오류 발생');
     }
   }
   isModalOpen.value = false; // 모달 닫기
 };
+
 
 onMounted(() => fetchData(0));
 </script>

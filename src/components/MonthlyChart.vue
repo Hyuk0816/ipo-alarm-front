@@ -82,7 +82,7 @@ export default {
             '11월', '12월'
           ],
           datasets: [{
-            label: '월별 이익',
+            label: '월별 이익 (단위: %)',
             data: this.chartData,
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 2,

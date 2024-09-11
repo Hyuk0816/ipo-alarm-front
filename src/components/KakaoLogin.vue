@@ -1,15 +1,20 @@
 <template>
   <div>
-    <button @click="goToKakaoLogin">카카오 로그인</button>
+    <img src="../assets/img/kakao_login_medium.png" @click="goToKakaoLogin" alt="kakoLogin"></img>
   </div>
 </template>
 
 <script setup>
-const goToKakaoLogin = () => {
+import {almostWhole} from "chart.js/helpers";
+
+import router from "../router/router.js";
+
+const goToKakaoLogin = async () => {
   // 카카오 로그인 URL
   // 카카오 로그인 페이지로 이동
-  const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=4273ed90c97fada8f1dedfc1222c3466&client_secret=lX1BBKnPhoN1hoalZ7XLdfml8UF74rpd&redirect_uri=http://localhost:8080/dev/login/oauth/kakao`;
+  const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=292b2857a22606f949ea630aea4ef0e0&client_secret=LyLPICzrjENT92TXZv937kz5ez4nKYLe&redirect_uri=http://localhost:8080/dev/login/oauth/kakao`;
   window.location.href = kakaoLoginUrl; // 해당 URL로 이동
+  await router.push({name:"home"})
 };
 </script>
 
