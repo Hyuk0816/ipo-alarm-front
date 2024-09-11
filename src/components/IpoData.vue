@@ -107,7 +107,8 @@
 import { ref, onMounted, computed } from 'vue';
 import axios from '../plugin/axios.js';
 import Modal from './Modal.vue'; // 모달 컴포넌트 임포트
-
+import {API_GET_IPO_DATA} from '../api/apiPoints.js'
+import {API_IPO_ALARM} from "../api/apiPoints.js";
 
 const ipoData = ref([]);
 const searchName = ref('');
@@ -120,6 +121,7 @@ const isFilterOpen = ref(false); // 필터가 열려있는지 여부
 const isModalOpen = ref(false);
 const selectedItem = ref(null); // 선택된 아이템 저장
 
+
 const fetchData = async (page) => {
   const params = {
     page,
@@ -129,8 +131,9 @@ const fetchData = async (page) => {
     start: startDate.value || undefined,
     end: endDate.value || undefined,
   };
+
   try {
-    const response = await axios.get('http://localhost:8080/api/ipo/data', { params });
+    const response = await axios.get(API_GET_IPO_DATA, { params });
     ipoData.value = response.data.content || [];
     totalPages.value = response.data.totalPages;
 
@@ -205,7 +208,7 @@ const submitAlarm = async () => {
     console.log(selectedItem.value);
     try {
       const ipoName = selectedItem.value; // ipoName으로 사용
-      await axios.post(`http://localhost:8080/api/alarm/data`, null, {
+      await axios.post(API_IPO_ALARM, null, {
         params: { ipoName } // params를 객체 형태로 전달
       });
 
