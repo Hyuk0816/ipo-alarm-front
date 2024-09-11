@@ -68,24 +68,29 @@
       </tr>
       </tbody>
     </table>
+    <div class="pagination">
+      <a href="#" class="first-page" @click.prevent="goToPage(0)" :class="{ disabled: currentPage === 0 }">First</a>
+      <a href="#" class="prev-page" @click.prevent="prevPage" :class="{ disabled: currentPage === 0 }">Prev</a>
 
-    <nav aria-label="Page navigation example">
-      <ul class="pagination justify-content-center">
-        <li class="page-item" :class="{ disabled: currentPage === 0 }">
-          <a class="page-link" href="#" aria-label="Previous" @click.prevent="prevPage">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page - 1 }">
-          <a class="page-link" href="#" @click.prevent="goToPage(page - 1)">{{ page }}</a>
-        </li>
-        <li class="page-item" :class="{ disabled: currentPage >= totalPages - 1 }">
-          <a class="page-link" href="#" aria-label="Next" @click.prevent="nextPage">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+      <template v-if="totalPages > 5">
+        <span v-if="currentPage > 3">...</span>
+        <a v-if="currentPage > 2" @click.prevent="goToPage(currentPage - 2)">{{ currentPage - 1 }}</a>
+        <a v-if="currentPage > 1" @click.prevent="goToPage(currentPage - 1)">{{ currentPage }}</a>
+        <a class="active">{{ currentPage + 1 }}</a>
+        <a v-if="currentPage < totalPages - 1" @click.prevent="goToPage(currentPage + 1)">{{ currentPage + 2 }}</a>
+        <a v-if="currentPage < totalPages - 2" @click.prevent="goToPage(currentPage + 2)">{{ currentPage + 3 }}</a>
+        <span v-if="currentPage < totalPages - 2">...</span>
+      </template>
+
+      <template v-else>
+        <a v-for="page in totalPages" :key="page" href="#"
+           @click.prevent="goToPage(page - 1)"
+           :class="{ active: currentPage === page - 1 }">{{ page }}</a>
+      </template>
+
+      <a href="#" class="next-page" @click.prevent="nextPage" :class="{ disabled: currentPage === totalPages }">Next</a>
+      <a href="#" class="last-page" @click.prevent="goToPage(totalPages - 1)" :class="{ disabled: currentPage === totalPages }">Last</a>
+    </div>
     <!-- 모달 -->
     <modal
         :isOpen="isModalOpen"
@@ -128,6 +133,7 @@ const fetchData = async (page) => {
     const response = await axios.get('http://localhost:8080/api/ipo/data', { params });
     ipoData.value = response.data.content || [];
     totalPages.value = response.data.totalPages;
+
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -188,6 +194,12 @@ const openModal = (item) => {
   selectedItem.value = item.ipoName; // 선택된 아이템 저장
   isModalOpen.value = true;
 };
+
+// Computed property to adjust for 0-based index from backend
+const adjustedCurrentPage = computed(() => {
+  return currentPage.value - 1; // 프론트엔드에서 1부터 시작하므로 1 빼줌
+});
+
 
 const submitAlarm = async () => {
   if (selectedItem.value) {
@@ -268,13 +280,53 @@ th {
   color: white;
 }
 
+
 .pagination {
-  margin-top: 20px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  list-style: none;
+  align-items: center;
+  width: 90%;
+  margin: auto;
 }
 
-.pagination button {
-  margin: 0 5px;
-  padding: 5px 10px;
+.pagination a {
+  color: #6e7a8e;
+  padding: 8px 12px;
+  margin: 0 4px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.pagination a:hover {
+  background-color: #e4e9f1;
+  cursor: pointer;
+}
+
+.pagination a.active {
+  color: blue;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.pagination a.disabled {
+  color: #d1d5db;
+  pointer-events: none;
+}
+
+.pagination a:first-child,
+.pagination a:last-child {
+  margin-right: 10px;
+  position: relative;
+}
+
+.pagination a.first-page,
+.pagination a.last-page {
+  font-weight: bold;
+  position: relative;
+
 }
 </style>
