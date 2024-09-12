@@ -12,7 +12,7 @@ const router = createRouter({
         {path:'/',component:MonthlyChart, name:"home"},
         {path: '/IpoData', component:IpoData},
         {path: '/ListingShares', component:ListingShares},
-        {path: '/IpoDetail', component:IpoDetail}
+        // {path: `/IpoDetail/${ipoName}`, component:IpoDetail}
     ]
 })
 

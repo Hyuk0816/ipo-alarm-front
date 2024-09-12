@@ -55,7 +55,7 @@
       <tbody>
       <tr v-for="(item, index) in paginatedData" :key="index">
         <td>{{ index + 1 + currentPage * pageSize }}</td>
-        <td>{{ item.ipoName }}</td>
+        <td @click="fetchDetail(item.ipoName)">{{ item.ipoName }}</td>
         <td>{{ item.ipoPrice }}</td>
         <td>{{ item.confirmPrice }}</td>
         <td>{{ item.competitionRate }}</td>
@@ -109,6 +109,7 @@ import axios from '../plugin/axios.js';
 import Modal from './Modal.vue'; // 모달 컴포넌트 임포트
 import {API_GET_IPO_DATA} from '../api/apiPoints.js'
 import {API_IPO_ALARM} from "../api/apiPoints.js";
+import {useIpoDetailStore} from "@/stores/IpoDetailStore.js";
 
 const ipoData = ref([]);
 const searchName = ref('');
@@ -206,20 +207,35 @@ const adjustedCurrentPage = computed(() => {
 const submitAlarm = async () => {
   if (selectedItem.value) {
     console.log(selectedItem.value);
-    try {
-      const ipoName = selectedItem.value; // ipoName으로 사용
-      await axios.post(API_IPO_ALARM, null, {
-        params: { ipoName } // params를 객체 형태로 전달
-      });
+    const ipoName = selectedItem.value;
 
-      alert('알람 신청 완료!');
+    try {
+      const response = await axios.post(API_IPO_ALARM, null, {
+        params: { ipoName }
+      });
+      alert(response.data.statusMsg);
     } catch (error) {
+      if (error.response) {
+        alert(error.response.data.errorMessage);
+      } else {
+        alert('알람 신청 중 오류 발생');
+      }
       console.error('Error submitting alarm:', error);
-      alert('알람 신청 중 오류 발생');
     }
   }
   isModalOpen.value = false; // 모달 닫기
 };
+
+const IpoDetailStore = useIpoDetailStore();
+
+const fetchDetail = async (ipoName) =>{
+  try{
+    await IpoDetailStore.fetchIpoDetail(ipoName);
+  }catch (error){
+    console.error('Error fetching detail:', error);
+  }
+}
+
 
 onMounted(() => fetchData(0));
 </script>

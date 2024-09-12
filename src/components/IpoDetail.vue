@@ -4,8 +4,8 @@
 
 <template>
   <div id="app" class="container mt-5">
-    <h1>{{ ipoName }}</h1>
-    <h4>{{ industry }}</h4>
+    <h1>종목명: 아이언디바이스</h1>
+    <h4>산업: 기타 수공업</h4>
     <p>대표: {{ representative }}</p>
     <p>매출: {{ revenue }}</p>
     <p>순이익: {{ netProfit }}</p>
