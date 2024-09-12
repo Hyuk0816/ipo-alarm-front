@@ -2,6 +2,7 @@ import axios from "axios";
 import {API_BASE_URL, API_GET_ACCESS_TOKEN} from "../api/apiPoints.js";
 
 const instance = axios.create({
+    timeout: 2000,
     baseURL: API_BASE_URL,
     withCredentials: true,
     headers: {
