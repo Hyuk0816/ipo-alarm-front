@@ -9,7 +9,7 @@ export const useIpoDetailStore = defineStore('ipoDetail',()=> {
     const fetchIpoDetail = async (ipoName) => {
 
         if(!ipoName){
-            console.error('ipoName missing')
+            console.error('공모주를 선택하세요!')
             alert("Ipo name missing")
         }
         try{
@@ -22,7 +22,6 @@ export const useIpoDetailStore = defineStore('ipoDetail',()=> {
         }
 
     }
-
     return{
         fetchIpoDetail,
     }
